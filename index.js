@@ -39,7 +39,7 @@ fileSystem.unlink("noddy.txt",function(err, result){
   if(err){
     console.log(err);
   }
-});*/ 
+});*/
 
 
 //to create a folder named noddy, we use the following code below
@@ -61,9 +61,22 @@ console.log(operatingSystem.platform());*/
 
 //http
 //the method to create a port and a local server
-const http = require("http");
+/*const http = require("http");
 
 http.createServer((request, response) => {
   console.log(request.headers);
   response.end("Hello Noddy!!");
+}).listen(3000);*/
+
+
+// as long as it is not the root route, an error will be shown (i.e. the "hello all...")
+const http = require("http");
+
+http.createServer((request, response) => {
+  if(request.url === "/") {
+    response.end("Hello Noddy!!");
+  }
+  else {
+    response.end("Hello all, this is not the root route")
+  }
 }).listen(3000);

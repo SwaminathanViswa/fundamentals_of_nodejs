@@ -47,7 +47,7 @@ fileSystem.unlink("noddy.txt",function(err, result){
 
 /*
 const fileSystem = require("fs");
-fileSystem.rmdir("noddy",function(err, result){
+fileSystem.mkdir("noddy",function(err, result){
   if(err){
     console.log(err);
   }
@@ -70,7 +70,7 @@ http.createServer((request, response) => {
 
 
 // as long as it is not the root route, an error will be shown (i.e. the "hello all...")
-const http = require("http");
+/*const http = require("http");
 
 http.createServer((request, response) => {
   if(request.url === "/") {
@@ -79,4 +79,78 @@ http.createServer((request, response) => {
   else {
     response.end("Hello all, this is not the root route")
   }
-}).listen(3000);
+}).listen(3000);*/
+
+
+//<----------------------------------------------------------------------------------------------------------------------------------------------->
+
+//REST API
+
+//RE -> REpresentational
+//S -> State (the data)
+//T -> Transfer
+
+//Representing data by sharing after processing
+
+//<----------------------------------------------------------------------------------------------------------------------------------------------->
+
+const express = require("express");
+
+//We need to initialise express and thus seen in the line below
+const noddy = express();
+
+//the line below is just to ask it to be expressed in a json format
+noddy.use(express.json());
+
+//HTTPS METHODS -> GET POST PUT DELETE
+//GET -> To retrieve any data
+//POST -> To send a data to the server
+//PUT -> To Update an existing data
+//DELETE -> to delete an existing data
+
+//the "/" is the route that we want it to be displayed in
+//the (request,response) is the callback method
+noddy.get("/",(request,response) => {
+  return response.json({data: "Hello guys!!"});
+});
+
+
+
+//the colon before the id just informs the code that the id is a variable and can be dynamically changed.
+noddy.get("/b/:id",(req,res) => {
+  const students = [
+    {
+      id:1,
+      name:"Student1"
+    },
+    {
+      id:2,
+      name:"Student2"
+    },
+    {
+      id:3,
+      name:"Student3"
+    },
+    {
+      id:4,
+      name:"Student4"
+    },
+    {
+      id:5,
+      name:"Student5"
+    }
+  ]
+
+// the studentID goes through the request from the url and checks for the id number
+  const studentID = req.params.id;
+  //the parseInt just converts the string to a int
+  const getStudent = students.filter((student) => student.id === parseInt(studentID));
+  return res.json({data: getStudent});
+});
+
+
+
+
+noddy.listen(3000, () => {
+  console.log("Server on port 3000 is up and running");
+});
